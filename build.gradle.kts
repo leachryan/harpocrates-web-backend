@@ -24,9 +24,14 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("dev.leachryan:harpocrates-codec:0.0.1") // TODO - change this
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	// Use the Kotlin JUnit 5 integration.
+	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+
+	// Use the JUnit 5 integration.
+	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
 }
 
 tasks.withType<KotlinCompile> {
@@ -36,16 +41,7 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-tasks.withType<Test> {
+tasks.named<Test>("test") {
+	// Use JUnit Platform for unit tests.
 	useJUnitPlatform()
-}
-
-repositories {
-	maven {
-		url = uri("https://maven.pkg.github.com/leachryan/harpocrates-codec")
-		credentials {
-			username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-			password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
-		}
-	}
 }
