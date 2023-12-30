@@ -1,6 +1,5 @@
 package dev.leachryan.harpocrates.web.backend
 
-import harpocrates.codec.AESCodec
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
