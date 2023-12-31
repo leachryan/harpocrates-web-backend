@@ -1,0 +1,24 @@
+version: '3'
+services:
+  harpocrates-application:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - harpocrates-redis-db
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    environment:
+      REDIS_DATABASE: ${REDIS_DATABASE}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_TIMEOUT: ${REDIS_TIMEOUT}
+      SERVER_PORT: ${SERVER_PORT}
+
+  harpocrates-redis-db:
+    container_name: harpocrates-redis-db
+    image: eqalpha/keydb:latest
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    command: keydb-server /etc/keydb/redis.conf --requirepass ${REDIS_PASSWORD}

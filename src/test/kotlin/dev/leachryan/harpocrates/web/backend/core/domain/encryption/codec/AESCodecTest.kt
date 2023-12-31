@@ -1,5 +1,7 @@
 package dev.leachryan.harpocrates.web.backend.core.domain.encryption.codec
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.security.InvalidAlgorithmParameterException
@@ -28,7 +30,7 @@ class AESCodecTest {
             initVector = initVector
         )
 
-        assertEquals(message, decryptedMessage)
+        assertThat(decryptedMessage).isEqualTo(message)
     }
 
     @Test

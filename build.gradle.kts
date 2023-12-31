@@ -25,6 +25,10 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+	// Test containers
+	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation("com.redis:testcontainers-redis:2.0.1")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	// Use the Kotlin JUnit 5 integration.
@@ -32,6 +36,15 @@ dependencies {
 
 	// Use the JUnit 5 integration.
 	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.1")
+
+	// AssertK
+	testImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
+}
+
+dependencyManagement {
+	imports {
+		mavenBom("org.testcontainers:testcontainers-bom:1.19.3")
+	}
 }
 
 tasks.withType<KotlinCompile> {
