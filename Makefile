@@ -9,3 +9,6 @@ docker/build:
 
 docker/compose-with-env:
 	docker compose --env-file .env up --build
+
+redis/up:
+	docker compose --env-file .env up --build harpocrates-redis-db
