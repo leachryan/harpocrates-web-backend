@@ -1,4 +1,4 @@
-package dev.leachryan.harpocrates.web.backend.integration
+package dev.leachryan.harpocrates.web.backend.integration.infrastructure
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
