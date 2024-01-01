@@ -20,9 +20,17 @@ repositories {
 }
 
 dependencies {
+	// Spring
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+
+	// Springdoc
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3")
+
+	// Jackson
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+	// Kotlin
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
 	// Test containers
