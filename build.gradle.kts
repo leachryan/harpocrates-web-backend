@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "dev.leachryan"
-version = "0.0.1-SNAPSHOT"
+version = "0.1.0"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_19
@@ -20,9 +20,17 @@ repositories {
 }
 
 dependencies {
+	// Spring
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+
+	// Springdoc
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.3")
+
+	// Jackson
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+	// Kotlin
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
 	// Test containers
@@ -42,6 +50,9 @@ dependencies {
 
 	// Mockk
 	testImplementation("io.mockk:mockk:1.13.8")
+
+	// REST-assured
+	testImplementation("io.rest-assured:rest-assured:5.4.0")
 }
 
 dependencyManagement {
