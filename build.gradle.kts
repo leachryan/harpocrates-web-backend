@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "dev.leachryan"
-version = "0.0.1-SNAPSHOT"
+version = "0.1.0"
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_19
@@ -50,6 +50,9 @@ dependencies {
 
 	// Mockk
 	testImplementation("io.mockk:mockk:1.13.8")
+
+	// REST-assured
+	testImplementation("io.rest-assured:rest-assured:5.4.0")
 }
 
 dependencyManagement {
