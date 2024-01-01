@@ -1,4 +1,4 @@
-package dev.leachryan.harpocrates.web.backend.integration
+package dev.leachryan.harpocrates.web.backend.integration.infrastructure
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -7,13 +7,16 @@ import assertk.assertions.isTrue
 import dev.leachryan.harpocrates.web.backend.integration.configuration.TestRedisConfiguration
 import dev.leachryan.harpocrates.web.backend.integration.setup.IntegrationTest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode
+import org.junit.jupiter.api.parallel.Isolated
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Import
 import org.springframework.data.redis.core.RedisTemplate
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import org.springframework.test.context.ContextConfiguration
 
-@Import(TestRedisConfiguration::class)
+@Isolated
+@Execution(ExecutionMode.SAME_THREAD)
+@ContextConfiguration(classes = [TestRedisConfiguration::class])
 class RedisIntegrationTest : IntegrationTest() {
 
     @Autowired

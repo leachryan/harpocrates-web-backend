@@ -39,6 +39,9 @@ dependencies {
 
 	// AssertK
 	testImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
+
+	// Mockk
+	testImplementation("io.mockk:mockk:1.13.8")
 }
 
 dependencyManagement {
