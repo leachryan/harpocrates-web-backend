@@ -8,6 +8,12 @@ Cryptography, specifically encryption, is the process of making text unintelligi
 
 `harpocrates-web-backend` is a Spring Boot application that provides functionality to create encrypted secrets, with a set amount of views, linked to a single ID. This ID is the key - if you have the ID, you can fetch and view the secret contents. You can also burn any secret by its ID as well.
 
+## The "Why"
+
+I wanted to create a secret-share site like https://onetimesecret.com. Harpocrates is a personal side project that allowed me to migrate away from Spring 2.7 and experiment with Spring 3.
+
+The goal is to make it simple, so that it can be easily ran locally, via a container, or using `docker-compose`. The goal is to allow someone to pull down the repo, then run it easily.
+
 ## Getting Started
 
 Harpocrates is available to be run locally, as a Docker container, or via `docker-compose`.
@@ -72,11 +78,25 @@ The secret key and init vector are tied to the following application properties:
 - `harpocrates.secret.key`
 - `harpocrates.init.vector`
 
+## API
+
+Harpocrates exposes three API endpoints:
+
+- `POST /api/secret`
+- `GET /api/secret{id}`
+- `DELETE /api/secret/{id}`
+
+The Swagger UI interface can be found at `/api/swagger-ui/index.html`
+The OpenAPI specification can be found at `/api/docs`
+
 ## Roadmap
 
 - Allow for other persistence sources to be used, like Postgres or MySQL
 - Add the ability to create an optional password tied to the secret, essentially creating a composite between the secret id and the password to access it
 - Improve READMe
+- Add vulnerability monitoring
+- Add code quality monitoring
+- Add lifetime to secrets, automatically burning them once the lifetime has been reached
 
 ## References
 
