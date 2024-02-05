@@ -26,7 +26,7 @@ class SecretControllerIntegrationTest : IntegrationTest() {
     private lateinit var port: String
 
     @Test
-    fun `create secret`() {
+    fun `create secret without password`() {
         val request = RestAssured.given()
 
         val payload = JSONObject()
@@ -44,7 +44,7 @@ class SecretControllerIntegrationTest : IntegrationTest() {
     }
 
     @Test
-    fun `get secret by id when found`() {
+    fun `get secret by id when found without password`() {
         val createSecretRequest = RestAssured.given()
 
         val createRequestPayload = JSONObject()
@@ -60,10 +60,14 @@ class SecretControllerIntegrationTest : IntegrationTest() {
 
         val getSecretRequest = RestAssured.given()
 
+        val getSecretRequestPayload = JSONObject()
+        getSecretRequestPayload.put("password", null)
+
         getSecretRequest.contentType("application/json")
         getSecretRequest.port(port.toInt())
+        getSecretRequest.body(getSecretRequestPayload.toString())
 
-        val getSecretResponse = getSecretRequest.get("/api/secret/$secretId")
+        val getSecretResponse = getSecretRequest.post("/api/secret/$secretId")
 
         assertThat(getSecretResponse.statusCode).isEqualTo(HttpStatus.OK.value())
         assertThat(getSecretResponse.jsonPath().getString("data.id")).isEqualTo(secretId)
@@ -72,15 +76,19 @@ class SecretControllerIntegrationTest : IntegrationTest() {
     }
 
     @Test
-    fun `get secret by id when not found`() {
+    fun `get secret by id when not found without password`() {
         val getSecretRequest = RestAssured.given()
+
+        val getSecretRequestPayload = JSONObject()
+        getSecretRequestPayload.put("password", null)
 
         getSecretRequest.contentType("application/json")
         getSecretRequest.port(port.toInt())
+        getSecretRequest.body(getSecretRequestPayload.toString())
 
         val secretId = UUID.randomUUID()
 
-        val getSecretResponse = getSecretRequest.get("/api/secret/$secretId")
+        val getSecretResponse = getSecretRequest.post("/api/secret/$secretId")
 
         assertThat(getSecretResponse.statusCode).isEqualTo(HttpStatus.NOT_FOUND.value())
     }

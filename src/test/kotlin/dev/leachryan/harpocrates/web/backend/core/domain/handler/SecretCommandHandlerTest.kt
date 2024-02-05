@@ -55,12 +55,13 @@ class SecretCommandHandlerTest {
     }
 
     @Test
-    fun `create secret`() {
+    fun `create secret without password`() {
         val command = CreateSecretCommand(
             value = message,
             maxViews = secret.remainingViews,
             secretKey = secretKey,
-            initVector = initVector
+            initVector = initVector,
+            password = null
         )
 
         every {
