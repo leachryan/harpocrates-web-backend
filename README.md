@@ -80,19 +80,12 @@ The secret key and init vector are tied to the following application properties:
 
 ## API
 
-Harpocrates exposes three API endpoints:
-
-- `POST /api/secret`
-- `GET /api/secret{id}`
-- `DELETE /api/secret/{id}`
-
 The Swagger UI interface can be found at `/api/swagger-ui/index.html`
 The OpenAPI specification can be found at `/api/docs`
 
 ## Roadmap
 
 - Allow for other persistence sources to be used, like Postgres or MySQL
-- Add the ability to create an optional password tied to the secret, essentially creating a composite between the secret id and the password to access it
 - Improve READMe
 - Add vulnerability monitoring
 - Add code quality monitoring
