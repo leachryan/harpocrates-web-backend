@@ -1,6 +1,7 @@
 package dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.controller
 
 import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.CreateSecretRequest
+import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.GetSecretRequest
 import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.response.Data
 import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.response.SecretResponse
 import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.response.toData
@@ -14,7 +15,6 @@ import dev.leachryan.harpocrates.web.backend.core.port.incoming.GetSecretUseCase
 import org.springframework.core.env.Environment
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -39,7 +39,8 @@ class SecretController(
             value = request.value,
             maxViews = request.maxViews,
             secretKey = environment.getProperty("harpocrates.secret.key").toString(),
-            initVector = environment.getProperty("harpocrates.init.vector").toString()
+            initVector = environment.getProperty("harpocrates.init.vector").toString(),
+            password = request.password
         )
 
         val secret = createSecretUseCase.createSecret(command)
@@ -47,14 +48,16 @@ class SecretController(
         return ResponseEntity.created(URI.create("${secret.id}")).build()
     }
 
-    @GetMapping(ApiRoutes.Secret.secretById)
+    @PostMapping(ApiRoutes.Secret.secretById)
     fun getSecretById(
-        @PathVariable(name = "id") id: UUID
+        @PathVariable(name = "id") id: UUID,
+        @RequestBody body: GetSecretRequest,
     ): ResponseEntity<Data<SecretResponse>> {
         val query = GetSecretQuery(
             id = id,
             secretKey = environment.getProperty("harpocrates.secret.key").toString(),
-            initVector = environment.getProperty("harpocrates.init.vector").toString()
+            initVector = environment.getProperty("harpocrates.init.vector").toString(),
+            password = body.password
         )
 
         val secret = getSecretUseCase.getSecret(query)

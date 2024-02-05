@@ -1,6 +1,8 @@
 package dev.leachryan.harpocrates.web.backend.core.domain.handler
 
 import dev.leachryan.harpocrates.web.backend.core.domain.encryption.codec.AESCodec
+import dev.leachryan.harpocrates.web.backend.core.domain.encryption.codec.BCryptCodec
+import dev.leachryan.harpocrates.web.backend.core.domain.exception.InvalidPasswordException
 import dev.leachryan.harpocrates.web.backend.core.domain.model.Secret
 import dev.leachryan.harpocrates.web.backend.core.domain.query.GetSecretQuery
 import dev.leachryan.harpocrates.web.backend.core.port.incoming.GetSecretUseCase
@@ -13,6 +15,22 @@ class SecretQueryHandler(
         val foundSecret = secretPort.fetchSecret(query.id)
 
         val result = foundSecret?.let { secret ->
+
+            /**
+             * Check if the secret has a password
+             *
+             * If the secret has a password, and the query does not, then throw an error
+             *
+             * If the secret has a password, and the query password is set, but does not match, throw an error
+             *
+             * Otherwise, passwords must match
+             */
+            if (secret.password != null) {
+                when (query.password) {
+                    null -> throw InvalidPasswordException()
+                    else -> if (!BCryptCodec.verify(query.password, secret.password)) throw InvalidPasswordException()
+                }
+            }
 
             // Decrypt the secret value
             val decryptedValue = AESCodec.decrypt(

@@ -5,6 +5,6 @@ data class CreateSecretCommand(
     val value: String,
     val maxViews: Int,
     val secretKey: String,
-    val initVector: String
-    // Password will be added in later updates
+    val initVector: String,
+    val password: String?
 )

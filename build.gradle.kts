@@ -33,6 +33,9 @@ dependencies {
 	// Kotlin
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+	// Bcrypt
+	implementation("at.favre.lib:bcrypt:0.10.2")
+
 	// Test containers
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("com.redis:testcontainers-redis:2.0.1")

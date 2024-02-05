@@ -40,11 +40,12 @@ class SecretQueryHandlerTest {
     )
 
     @Test
-    fun `get secret when secret not found`() {
+    fun `get secret when secret not found without password`() {
         val query = GetSecretQuery(
             id = secret.id,
             secretKey = secretKey,
-            initVector = initVector
+            initVector = initVector,
+            password = null
         )
 
         every {
@@ -61,11 +62,12 @@ class SecretQueryHandlerTest {
     }
 
     @Test
-    fun `get secret when secret is found and has available views`() {
+    fun `get secret when secret is found and has available views without password`() {
         val query = GetSecretQuery(
             id = secret.id,
             secretKey = secretKey,
-            initVector = initVector
+            initVector = initVector,
+            password = null
         )
 
         every {
@@ -100,11 +102,12 @@ class SecretQueryHandlerTest {
     }
 
     @Test
-    fun `get secret when secret is found and has no more views`() {
+    fun `get secret when secret is found and has no more views without password`() {
         val query = GetSecretQuery(
             id = secret.id,
             secretKey = secretKey,
-            initVector = initVector
+            initVector = initVector,
+            password = null
         )
 
         every {
