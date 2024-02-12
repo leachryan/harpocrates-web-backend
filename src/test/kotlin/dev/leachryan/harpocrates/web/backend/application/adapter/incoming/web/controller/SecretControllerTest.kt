@@ -3,8 +3,9 @@ package dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.c
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isTrue
-import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.CreateSecretRequest
-import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.GetSecretRequest
+import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.BurnSecretPayload
+import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.CreateSecretPayload
+import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.GetSecretPayload
 import dev.leachryan.harpocrates.web.backend.core.domain.command.BurnSecretCommand
 import dev.leachryan.harpocrates.web.backend.core.domain.command.CreateSecretCommand
 import dev.leachryan.harpocrates.web.backend.core.domain.model.Secret
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.core.env.Environment
 import org.springframework.http.HttpStatus
 import java.net.URI
-import java.util.*
+import java.util.UUID
 
 class SecretControllerTest {
 
@@ -47,7 +48,7 @@ class SecretControllerTest {
 
     @Test
     fun `create secret without password`() {
-        val request = CreateSecretRequest(
+        val request = CreateSecretPayload(
             value = "message",
             maxViews = 10,
             password = null
@@ -100,7 +101,7 @@ class SecretControllerTest {
             password = null
         )
 
-        val body = GetSecretRequest(password = null)
+        val body = GetSecretPayload(id = secret.id, password = null)
 
         every {
             environment.getProperty("harpocrates.secret.key")
@@ -114,7 +115,7 @@ class SecretControllerTest {
             getSecretUseCase.getSecret(query)
         } returns secret
 
-        val response = secretController.getSecretById(secret.id, body)
+        val response = secretController.getSecretById(body)
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(response.hasBody()).isTrue()
@@ -147,7 +148,7 @@ class SecretControllerTest {
             password = null
         )
 
-        val body = GetSecretRequest(password = null)
+        val body = GetSecretPayload(id = secret.id, password = null)
 
         every {
             environment.getProperty("harpocrates.secret.key")
@@ -161,7 +162,7 @@ class SecretControllerTest {
             getSecretUseCase.getSecret(query)
         } returns null
 
-        val response = secretController.getSecretById(secret.id, body)
+        val response = secretController.getSecretById(body)
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.NOT_FOUND)
 
@@ -182,11 +183,13 @@ class SecretControllerTest {
     fun `burn secret by id`() {
         val command = BurnSecretCommand(secret.id)
 
+        val body = BurnSecretPayload(id = command.id)
+
         justRun {
             burnSecretUseCase.burnSecret(command)
         }
 
-        val response = secretController.burnSecret(secret.id)
+        val response = secretController.burnSecret(body)
 
         assertThat(response.statusCode).isEqualTo(HttpStatus.NO_CONTENT)
 

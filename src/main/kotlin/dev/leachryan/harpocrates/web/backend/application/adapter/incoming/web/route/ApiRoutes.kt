@@ -3,8 +3,13 @@ package dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.r
 object ApiRoutes {
 
     object Secret {
-        const val root: String = "/secret"
+        private const val commandRoot: String = "command"
+        private const val queryRoot: String = "query"
 
-        const val secretById: String = "$root/{id}"
+        const val createSecretCommand: String = "$commandRoot/create-secret"
+        
+        const val burnSecretCommand: String = "$commandRoot/burn-secret"
+        
+        const val getSecretQuery: String = "$queryRoot/get-secret"
     }
 }

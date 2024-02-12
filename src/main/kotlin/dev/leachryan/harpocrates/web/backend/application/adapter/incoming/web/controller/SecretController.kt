@@ -1,7 +1,8 @@
 package dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.controller
 
-import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.CreateSecretRequest
-import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.GetSecretRequest
+import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.BurnSecretPayload
+import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.CreateSecretPayload
+import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.request.GetSecretPayload
 import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.response.Data
 import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.response.SecretResponse
 import dev.leachryan.harpocrates.web.backend.application.adapter.incoming.web.payload.response.toData
@@ -14,13 +15,10 @@ import dev.leachryan.harpocrates.web.backend.core.port.incoming.CreateSecretUseC
 import dev.leachryan.harpocrates.web.backend.core.port.incoming.GetSecretUseCase
 import org.springframework.core.env.Environment
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
-import java.util.*
 
 @RestController
 class SecretController(
@@ -30,10 +28,10 @@ class SecretController(
     private val environment: Environment
 ) {
 
-    @PostMapping(ApiRoutes.Secret.root)
+    @PostMapping(ApiRoutes.Secret.createSecretCommand)
     fun createSecret(
         @RequestBody
-        request: CreateSecretRequest
+        request: CreateSecretPayload
     ): ResponseEntity<String> {
         val command = CreateSecretCommand(
             value = request.value,
@@ -48,13 +46,12 @@ class SecretController(
         return ResponseEntity.created(URI.create("${secret.id}")).build()
     }
 
-    @PostMapping(ApiRoutes.Secret.secretById)
+    @PostMapping(ApiRoutes.Secret.getSecretQuery)
     fun getSecretById(
-        @PathVariable(name = "id") id: UUID,
-        @RequestBody body: GetSecretRequest,
+        @RequestBody body: GetSecretPayload,
     ): ResponseEntity<Data<SecretResponse>> {
         val query = GetSecretQuery(
-            id = id,
+            id = body.id,
             secretKey = environment.getProperty("harpocrates.secret.key").toString(),
             initVector = environment.getProperty("harpocrates.init.vector").toString(),
             password = body.password
@@ -73,11 +70,11 @@ class SecretController(
         } ?: ResponseEntity.notFound().build()
     }
 
-    @DeleteMapping(ApiRoutes.Secret.secretById)
+    @PostMapping(ApiRoutes.Secret.burnSecretCommand)
     fun burnSecret(
-        @PathVariable(name = "id") id: UUID
+        @RequestBody body: BurnSecretPayload
     ): ResponseEntity<String> {
-        val command = BurnSecretCommand(id)
+        val command = BurnSecretCommand(body.id)
 
         burnSecretUseCase.burnSecret(command)
 
