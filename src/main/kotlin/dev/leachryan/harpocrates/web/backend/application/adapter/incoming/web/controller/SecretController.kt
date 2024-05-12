@@ -15,12 +15,14 @@ import dev.leachryan.harpocrates.web.backend.core.port.incoming.CreateSecretUseC
 import dev.leachryan.harpocrates.web.backend.core.port.incoming.GetSecretUseCase
 import org.springframework.core.env.Environment
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"], exposedHeaders = ["*"])
 class SecretController(
     private val createSecretUseCase: CreateSecretUseCase,
     private val getSecretUseCase: GetSecretUseCase,
