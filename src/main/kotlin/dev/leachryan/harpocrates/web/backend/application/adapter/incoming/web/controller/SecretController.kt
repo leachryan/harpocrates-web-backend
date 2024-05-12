@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.net.URI
 
 @RestController
-@CrossOrigin(origins = ["*"])
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"], exposedHeaders = ["*"])
 class SecretController(
     private val createSecretUseCase: CreateSecretUseCase,
     private val getSecretUseCase: GetSecretUseCase,
